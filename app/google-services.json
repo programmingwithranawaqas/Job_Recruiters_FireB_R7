@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "893562848042",
+    "project_id": "job-recruiters-fireb-r7",
+    "storage_bucket": "job-recruiters-fireb-r7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:893562848042:android:47e9f3cf2ba7052c311453",
+        "android_client_info": {
+          "package_name": "com.example.job_recruiters_fireb_r7"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCbrbN8u6PEZeqwH-K-iyQjLDZAmBVLLd8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
