@@ -18,7 +18,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -28,6 +31,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.FirebaseDatabaseKtxRegistrar;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -36,13 +40,16 @@ import java.util.HashMap;
 public class MainActivity extends AppCompatActivity {
 
     FloatingActionButton fabAdd;
-    TextView tvRecords;
+    RecyclerView rvApplicants;
+    // TextView tvRecords;
     Button btnAddJob;
 
     ArrayList<String> jobs;
     ArrayAdapter<String> adapter;
 
     DatabaseReference reference;
+
+    ApplicantAdapter applicantAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
 
         init();
         loadJobs();
-        loadApplicants();
+        //loadApplicants();
         fabAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadApplicants()
     {
-        withoutRefresh();
+        //withoutRefresh();
         //withRefresh();
     }
 
@@ -135,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
 
                         }
 
-                        tvRecords.setText(text);
+                        //tvRecords.setText(text);
                     }
 
                     @Override
@@ -164,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
 
                         }
 
-                        tvRecords.setText(text);
+                        //tvRecords.setText(text);
 
                     }
 
@@ -231,7 +238,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         }); // end of positive button code
-
         add.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -257,8 +263,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
-
         add.show();
 
     }
@@ -267,17 +271,38 @@ public class MainActivity extends AppCompatActivity {
     {
         reference = FirebaseDatabase.getInstance().getReference();
         fabAdd = findViewById(R.id.fabAdd);
-        tvRecords = findViewById(R.id.tvRecords);
+        //tvRecords = findViewById(R.id.tvRecords);
+        //tvRecords.setText("Loading...");
         btnAddJob = findViewById(R.id.btnAddJob);
-        tvRecords.setText("Loading...");
 
         jobs = new ArrayList<>();
 
-
-
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, jobs);
 
+        rvApplicants = findViewById(R.id.rvApplicants);
+        rvApplicants.setHasFixedSize(true);
+        rvApplicants.setLayoutManager(new LinearLayoutManager(this));
 
+        Query query = reference.child("Applicants");
+        FirebaseRecyclerOptions<Applicant> options
+                = new FirebaseRecyclerOptions.Builder<Applicant>()
+                .setQuery(query, Applicant.class)
+                .build();
+
+        applicantAdapter = new ApplicantAdapter(options);
+        rvApplicants.setAdapter(applicantAdapter);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        applicantAdapter.startListening();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        applicantAdapter.stopListening();
     }
 
     private void loadJobs()
