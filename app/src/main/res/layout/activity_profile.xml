@@ -126,7 +126,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Edit Profile"
-        android:id="@+id/logout"
+        android:id="@+id/btnEditProfile"
         app:layout_constraintBottom_toTopOf="@id/btnResetPassword"
         android:layout_marginEnd="@dimen/margin_left_right"
         android:layout_marginStart="@dimen/margin_left_right"

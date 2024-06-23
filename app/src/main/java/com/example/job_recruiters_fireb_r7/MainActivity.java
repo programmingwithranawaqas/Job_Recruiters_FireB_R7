@@ -38,7 +38,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
-
     FloatingActionButton fabAdd;
     RecyclerView rvApplicants;
     // TextView tvRecords;
